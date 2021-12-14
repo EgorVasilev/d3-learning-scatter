@@ -1,5 +1,6 @@
 'use strict';
 
+/* check #plot aspect-ratio in CSS as well if you want to change it */
 const plotWidth = 900;
 const plotHeight = 500;
 const plotPadding = 40;
@@ -10,9 +11,7 @@ function fetchGDP() {
 }
 
 function setPlotSize() {
-    d3.select('#plot')
-        .attr('width', plotWidth)
-        .attr('height', plotHeight);
+  d3.select("#plot").attr("viewBox", `0 0 ${plotWidth} ${plotHeight}`);
 }
 
 function handleMouseOver(event, {Name, Nationality, Year, Seconds, Doping}) {
@@ -25,12 +24,12 @@ function handleMouseOver(event, {Name, Nationality, Year, Seconds, Doping}) {
         .style('top', `${event.clientY + offset}px`)
         .style('left', `${event.clientX + offset}px`)
         .attr('data-year', Year)
-        .classed('hidden', false)
+        .classed('hidden', false);
 }
 
 function handleMouseOut() {
     d3.select('.tooltip')
-        .classed('hidden', true)
+        .classed('hidden', true);
 }
 
 function getXScale(data) {
@@ -64,19 +63,19 @@ function secondsToMinutes(seconds) {
 }
 
 function renderYAxis(yScale) {
-    const yAxisScale = yScale.range([0, plotHeight - (plotPadding * 2),])
-    const yAxis = d3.axisLeft(yAxisScale).tickFormat(secondsToMinutes)
+    const yAxisScale = yScale.range([0, plotHeight - (plotPadding * 2),]);
+    const yAxis = d3.axisLeft(yAxisScale).tickFormat(secondsToMinutes);
 
     d3.select('#plot')
         .append('g')
         .attr('id', 'y-axis')
         .attr('transform', `translate(${plotPadding}, ${plotPadding})`)
-        .call(yAxis)
+        .call(yAxis);
 }
 
 function renderPoints(data) {
-    const xScale = getXScale(data)
-    const yScale = getYScale(data)
+    const xScale = getXScale(data);
+    const yScale = getYScale(data);
 
     d3.select('#plot')
         .selectAll('rect')
@@ -96,8 +95,8 @@ function renderPoints(data) {
         .on('mouseover', handleMouseOver)
         .on('mouseout', handleMouseOut);
 
-    renderXAxis(xScale)
-    renderYAxis(yScale)
+    renderXAxis(xScale);
+    renderYAxis(yScale);
 }
 
 function renderLegend() {
@@ -110,12 +109,11 @@ function renderLegend() {
 }
 
 setPlotSize();
-renderLegend()
+renderLegend();
 
 fetchGDP()
     .then(result => {
         renderPoints(result);
-
     })
     .catch(error => {
         console.warn(error);

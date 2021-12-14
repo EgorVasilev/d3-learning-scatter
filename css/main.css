@@ -72,8 +72,7 @@ body {
 }
 
 #plot {
-    height: 500px;
-    width: 900px;
+    aspect-ratio: 1000 / 500; /* check #plot width/height setter in JS as well if you want to change it */
 }
 
 #plot circle {
